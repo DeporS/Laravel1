@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -46,4 +46,56 @@
         </table>
     </form>
 </body>
-</html>
+</html> --}}
+
+<x-app-layout>
+    
+
+    <!-- Display Validation Errors -->
+    @if ($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">Whoops!</strong> There were some problems with your input.
+            <ul class="mt-3 list-disc list-inside text-sm">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <!-- Form -->
+    <form action="{{ route('validateForm') }}" method="POST">
+        @csrf
+        <div class="flex-wrap">
+            <div class="mb-4 flex justify-center">
+                <div class="w-1/3 sm:w-1/2">
+                    <x-input-label for="name" :value="__('Name')" />
+                    <x-text-input type="text" name="name" id="name" value="{{ old('name') }}" class="w-full" required/>
+                </div>
+            </div>
+
+            <div class="mb-4 flex justify-center">
+                <div class="w-1/3 sm:w-1/2">
+                    <x-input-label for="surname" :value="__('Surname')" />
+                    <x-text-input type="text" name="surname" id="surname" value="{{ old('surname') }}" class="w-full" required/>
+                </div>
+            </div>
+
+            <div class="mb-4 flex justify-center">
+                <div class="w-1/3 sm:w-1/2">
+                    <x-input-label for="email" :value="__('E-mail')"/>
+                    <x-text-input type="email" name="email" id="email" value="{{ old('email') }}" class="w-full" required/>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-center mt-6">
+                <x-primary-button class="ms-3" type="submit">
+                    {{ __('Wyślij') }}
+                </x-primary-button>
+            </div>
+        </div>
+        
+        
+    </form>
+</x-app-layout>
+

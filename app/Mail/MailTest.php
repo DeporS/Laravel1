@@ -40,7 +40,7 @@ class MailTest extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'testMail',
+            view: 'mails/testMail',
         );
     }
 

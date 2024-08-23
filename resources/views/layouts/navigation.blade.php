@@ -18,6 +18,14 @@
                     <x-nav-link :href="route('form')" :active="request()->routeIs('form')">
                         {{ __('Form') }}
                     </x-nav-link>
+                    @if (Auth::user()->role === 'admin')
+                    <x-nav-link :href="route('formCenter')" :active="request()->routeIs('formCenter')">
+                        {{ __('Form Center') }}
+                    </x-nav-link>
+                    @endif
+                    <x-nav-link :href="route('photos.index')" :active="request()->routeIs('photos.index')">
+                        {{ __('Photos') }}
+                    </x-nav-link>
                 </div>
             </div>
 

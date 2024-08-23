@@ -13,12 +13,25 @@ class PhotoController extends Controller
      */
     public function index()
     {
-        $photos = Storage::files('public/photos'); // pobiera wszystkie zdjecia
-        $photos = array_map(function($photo) {
-            return basename($photo); // zwraca nazwe pliku
-        }, $photos);
+        // $photos = Storage::files('public/photos'); // pobiera wszystkie zdjecia
+        // $photos = array_map(function($photo) {
+        //     return basename($photo); // zwraca nazwe pliku
+        // }, $photos);
 
-        return view('photos.photoIndex', compact('photos'));
+        // return view('photos.photoIndex', compact('photos'));
+        // Pobiera wszystkie zdjęcia z bazy danych
+        $photos = Photo::all(); // Zwraca kolekcję z obiektami Photo
+        
+        // Możesz mapować je, aby uzyskać potrzebne dane, jeśli chcesz
+        $photosData = $photos->map(function($photo) {
+            return [
+                'id' => $photo->id,
+                'path' => $photo->path,
+                'basename' => basename($photo->path)
+            ];
+        });
+
+        return view('photos.photoIndex', compact('photosData'));
     }
 
     /**

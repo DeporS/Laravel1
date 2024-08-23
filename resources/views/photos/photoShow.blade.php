@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<x-app-layout>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +7,9 @@
 </head>
 <body>
     <h1>Photo Details</h1>
-    <img src="{{ asset('storage/' . trim($photo->path, '"')) }}" height="100px" alt="">
+    <img src="{{ asset('storage/' . trim($photo->path, '"')) }}" width="400px" height="auto" alt="Photo">
     <p>ID: {{ $photo->id }}</p>
-    <p>Path: {{ $photo->path }}</p>
+    {{-- <p>Path: {{ $photo->path }}</p> --}}
 
     <!-- link do edytowania zdjecia -->
     <a href="{{ route('photos.edit', $photo->id) }}">Edit</a>
@@ -22,4 +21,4 @@
         <button type="submit">Delete</button>
     </form>
 </body>
-</html>
+</x-app-layout>

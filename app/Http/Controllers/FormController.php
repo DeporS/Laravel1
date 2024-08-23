@@ -26,7 +26,7 @@ class FormController extends Controller
         ]);
 
         Mail::to($request->email)->send(new MailTest([
-            'name' => 'Demo',
+            'name' => $request->name,
         ]));
 
         $post = new Post;
@@ -35,7 +35,7 @@ class FormController extends Controller
         $post->email = $request->email;
         $post->save();
 
-        return response()->json($validatedData);
+        return view('formSent');
         
     }
     
