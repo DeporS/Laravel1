@@ -1,0 +1,1 @@
+<img src="{{ asset('images/DEPO.png') }}" alt="Depo" width="100" height="100">
