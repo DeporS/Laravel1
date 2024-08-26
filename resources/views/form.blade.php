@@ -64,7 +64,7 @@
     @endif
 
     <!-- Form -->
-    <form action="{{ route('validateForm') }}" method="POST">
+    <form action="{{ route('validateForm') }}" method="POST" style="padding-top: 20px">
         @csrf
         <div class="flex-wrap">
             <div class="mb-4 flex justify-center">
@@ -93,9 +93,7 @@
                     {{ __('Wyślij') }}
                 </x-primary-button>
             </div>
-        </div>
-        
-        
+        </div>                            
     </form>
 </x-app-layout>
 

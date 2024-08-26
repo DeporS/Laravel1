@@ -9,6 +9,8 @@
                 display: flex; 
                 flex-wrap: wrap; 
                 gap: 10px; 
+                padding-top: 10px;
+                padding-left: 10px;
             }
 
             .photo-container img {

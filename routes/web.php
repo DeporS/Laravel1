@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\Center;
 use Illuminate\Support\Facades\Route;
 
@@ -48,12 +49,19 @@ Route::middleware('auth')->group(function () {
 
     // Photos route resource
     Route::resource('photos', PhotoController::class);
+
+    // Route resource do sklepu, ale bez mozliwosci adminowskich
+    Route::resource('shop', ShopController::class)->except(['update', 'destroy']);
 });
 
 // admin
 Route::middleware(['auth', 'admin'])->group(function () {
     // form center
     Route::get('/form-center', [Center::class, 'show'])->name('formCenter');
+
+    // route do sklepu dla admina
+    Route::put('shop/{shop}', [ShopController::class, 'update'])->name('shop.update');
+    Route::delete('shop/{shop}', [ShopController::class, 'destroy'])->name('shop.destroy');
 });
 
 
@@ -61,7 +69,4 @@ Route::middleware(['auth', 'admin'])->group(function () {
 require __DIR__.'/auth.php';
 
 
-
-
-
-// maile z laravela / rejestracja i konfirmacja maili / przejscie do systemu jako zalogowany
+// dodac zdjecie profilowe

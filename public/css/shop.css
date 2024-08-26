@@ -1,0 +1,63 @@
+.x-text-input {
+    background-color: #ffffff; /* Kolor tła */
+    border: 1px solid #dfdfdf; /* Kolor obramowania */
+    padding: 10px; /* Wewnętrzny margines */
+    font-size: 16px; /* Rozmiar czcionki */
+    border-radius: 4px; /* Zaokrąglenie rogów */
+    width: 100%; /* Szerokość */
+    box-sizing: border-box; /* Uwzględnia padding i border w szerokości */
+    resize: vertical; /* Umożliwia zmianę wysokości */
+}
+
+.x-text-input:focus {
+    border-color: #007bff; /* Kolor obramowania podczas fokusu */
+    outline: none; /* Usunięcie domyślnego obramowania */
+}
+
+.add-button {
+    background-color: #ffffff;
+    border: 1px solid #dfdfdf;
+    color: black;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.add-button:hover {
+    background-color: white;
+}
+
+.listings {
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 10px; 
+    padding-top: 1%;
+    padding-left: 1%;
+}
+
+.container {
+    position: relative;
+    float: left;
+    width: 300px;
+    height: auto;
+}
+
+.container .hoverImg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: none;
+}
+
+.container:hover .hoverImg {
+    display: block;
+}
+
+.photo-in-show{
+    width: 350px; 
+    height: auto; 
+    border-radius: 7px;
+    border: 3px solid rgb(255, 255, 255);
+
+}
