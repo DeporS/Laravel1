@@ -61,3 +61,33 @@
     border: 3px solid rgb(255, 255, 255);
 
 }
+
+.buy-button {
+    background-color: white;
+    border: 2px solid #dfdfdf;
+    color: black;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    box-sizing: border-box;
+    box-shadow: 2px 2px gray;
+}
+
+.buy-button:hover {
+    background-color: lightblue;
+}
+
+.add-to-cart-button {
+    background-color: lightgray;
+    border: 1px solid #dfdfdf;
+    color: black;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    box-sizing: border-box;
+    box-shadow: 2px 2px gray;
+}
+
+.add-to-cart-button:hover {
+    background-color: white;
+}

@@ -1,3 +1,6 @@
+<head>
+    <link rel="stylesheet" href="{{ asset('\css\styles.css') }}">
+</head>
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,9 +35,54 @@
                 </div>
             </div>
 
+            <!-- Cart Dropdown -->
+            <div class="hidden sm:flex sm:items-center sm:ms-6">
+                <x-dropdown>
+                    <x-slot name="trigger">
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                            <div>Cart</div>
+            
+                            <div class="ms-1">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </button>
+                    </x-slot>
+            
+                    <x-slot name="content">
+                        @if (session('cart') && count(session('cart')) > 0)
+                            <ul class="cart-list space-y-2 overflow-auto max-h-60">
+                                @foreach (session('cart') as $item)
+                                <li class="flex justify-between items-center bg-white p-2 rounded shadow-sm">
+                                    <a class="flex justify-between items-center" href="/shop/{{ $item['id'] }}">
+                                        <img src="{{ asset('storage/' . $item['img']) }}" class="img" width="40px" height="auto"/>
+                                        <span style="padding-right: 5px; padding-left: 5px;">{{ $item['name'] }}</span>
+                                        <div>
+                                            <span>{{ $item['quantity'] }} x</span>
+                                            <span>${{ number_format($item['price'], 2) }}</span>
+                                        </div>
+                                        
+                                   </a>
+                                    
+                                </li>
+                                @endforeach
+                            </ul>
+                            <div class="border-t border-gray-200 mt-2 pt-2">
+                                <a href="{{ route('cart.show') }}" class="block text-center text-blue-500">View Cart</a>
+                            </div>
+                        @else
+                            <p class="text-center text-gray-500">Your cart is empty.</p>
+                        @endif
+            
+                        
+                    </x-slot>
+                </x-dropdown>
+            </div>
+
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
+                <x-dropdown width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
                             <div>{{ Auth::user()->name }}</div>

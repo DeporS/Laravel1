@@ -27,8 +27,20 @@
                     <p style="font-weight: bold" align="center"> {{ $product->name }} - ${{ $product->price }} </p>
                     <p align="center"> {{ $product->description }} </p>
                 </div>
+                <div style="padding-bottom: 5px">
+                    <!-- link do kupienia teraz -->
+                    <a href="{{ route('shop.buy', $product->id) }}">
+                        <button class="buy-button">Buy</button>
+                    </a>
+
+                    <!-- dodanie do koszyka -->
+                    <a href="{{ route('cart.add', ['id' => $product->id]) }}">
+                        <button class="add-to-cart-button">Add to cart</button>
+                    </a>
+                </div>
                 <div>
                     <!-- link do edytowania zdjecia -->
+                    @if (Auth::user()->role === 'admin')
                     <a href="{{ route('shop.edit', $product->id) }}">
                         <button class="add-button">Edit</button>
                     </a>
@@ -39,6 +51,7 @@
                         @method('DELETE')
                         <button class="delete-button" type="submit" onclick="return confirm('Are you sure you want to delete this listing?');">Delete</button>
                     </form>
+                    @endif
                 </div>
             </div>
             <div class="basis-1/3">

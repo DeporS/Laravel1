@@ -6,6 +6,7 @@ use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\Center;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +27,19 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
+
+// admin
+Route::middleware(['auth', 'admin'])->group(function () {
+    // form center
+    Route::get('/form-center', [Center::class, 'show'])->name('formCenter');
+
+    // route do sklepu dla admina
+    Route::resource('shop', ShopController::class)->except(['index', 'show']);
+});
+
+
 
 // kazdy uzytkownik
 Route::middleware('auth')->group(function () {
@@ -50,20 +64,17 @@ Route::middleware('auth')->group(function () {
     // Photos route resource
     Route::resource('photos', PhotoController::class);
 
-    // Route resource do sklepu, ale bez mozliwosci adminowskich
-    Route::resource('shop', ShopController::class)->except(['update', 'destroy']);
+    // route do sklepu dla usera
+    Route::resource('shop', ShopController::class)->only(['index', 'show']);
+    // trasa do kupowania
+    Route::get('/shop/{id}/buy', [ShopController::class, 'buy'])->name('shop.buy');
+
+
+    // koszyk
+    Route::get('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+    Route::get('/cart/show', [CartController::class, 'show'])->name('cart.show'); 
+    Route::post('/cart/delete/{id}', [CartController::class, 'delete'])->name('cart.delete');
 });
-
-// admin
-Route::middleware(['auth', 'admin'])->group(function () {
-    // form center
-    Route::get('/form-center', [Center::class, 'show'])->name('formCenter');
-
-    // route do sklepu dla admina
-    Route::put('shop/{shop}', [ShopController::class, 'update'])->name('shop.update');
-    Route::delete('shop/{shop}', [ShopController::class, 'destroy'])->name('shop.destroy');
-});
-
 
 
 require __DIR__.'/auth.php';

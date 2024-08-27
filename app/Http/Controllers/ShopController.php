@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage; 
 use App\Models\Product;
+
 
 class ShopController extends Controller
 {
@@ -62,6 +64,12 @@ class ShopController extends Controller
         $product->description = $request->input('description');
         $product->price = $request->input('price');
         $product->paths = json_encode($paths); // Zapisz jako JSON
+        
+        // sprawdzenie czy zostala podana szczegolna ilosc przedmiotu
+        if($request->filled('available')){
+            $product->available = $request->input('available');
+        }
+        
         $product->save();
 
         return redirect()->route('shop.index')->with('success', 'Listing added successfully.');
@@ -117,14 +125,28 @@ class ShopController extends Controller
     }
 
     /**
+     * Show the form for buying an item.
+     */
+
+    public function buy(Request $request, string $id)
+    {
+        $product = Product::findOrFail($id);
+
+        return view('shop.shopBuy', ['product' => $product]);
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
         $product = Product::findOrFail($id);
 
-        if($product->path){
-            Storage::disk('public')->delete($product->path);
+        if($product->paths){
+            $paths = json_decode($product->paths, true);
+            foreach ($paths as $path) {
+                Storage::disk('public')->delete($path);
+            }
         }
 
         $product->delete();

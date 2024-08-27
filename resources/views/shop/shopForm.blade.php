@@ -33,16 +33,26 @@
                         <textarea name="description" id="description" class="x-text-input w-full" style="height: 200px;">{{ old('description') }}</textarea>
                     </div>
 
-                    <!-- Cena -->
                     <div class="mb-4 w-full">
-                        <div class="flex flex-row">
-                            <div class="basis-1/2">
+                        <div class="flex w-full">
+
+                            <!-- Cena -->
+                            <div class="flex-1 w-20" style="padding-right: 10px">
                                 <x-input-label for="price" :value="__('Price ($)')" />
-                                <input type="number" name="price" id="price" value="{{ old('price') }}" placeholder="0,00" class="x-text-input w-full" style="width: 75%" step="0.01" required/>
+                                <input type="number" name="price" id="price" value="{{ old('price') }}" placeholder="0,00" class="x-text-input w-full"  step="0.01" required/>
                             </div>
-                            <div class="basis-1/2">
-                                
+
+                            <!-- Ilosc -->
+                            <div class="flex-1 w-20" style="padding-right: 10px">
+                                <x-input-label for="available" :value="__('Count')" />
+                                <input type="number" name="available" id="available" value="{{ old('available') }}" placeholder="1" class="x-text-input w-full"/>
                             </div>
+                            
+                            <div class="flex-1 w-20">
+                                {{-- <x-input-label for="available" :value="__('Count')" />
+                                <input type="number" name="available" id="available" value="{{ old('available') }}" placeholder="0" class="x-text-input w-full" required/> --}}
+                            </div>
+                            
                         </div>
                     </div>
 

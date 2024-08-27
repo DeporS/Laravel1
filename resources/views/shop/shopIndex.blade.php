@@ -12,7 +12,9 @@
                 <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                     {{ __('Products') }}
                 </h2>
-                <x-nav-link href="/shop/create" class="button font-semibold text-xl leading-tight">{{ __("Add listing") }}</x-nav-link>
+                @if (Auth::user()->role === 'admin')
+                    <x-nav-link href="/shop/create" class="button font-semibold text-xl leading-tight">{{ __("Add listing") }}</x-nav-link>
+                @endif
             </div>
         </x-slot>
         <div class="listings flex justify-center">
@@ -31,12 +33,13 @@
                             <img src="{{ asset('storage/' . $product['paths'][0]) }}" class="img" alt="Product Image" />    <!-- pierwsze zdjecie od konca -->
                         </div>
                         @php
+                            $nums = 0;
                             if(count($product['paths']) > 1){
-                                $nums = 2;
+                                $nums = 1;
                             }
                         @endphp
                         <div class="hoverImg">
-                            <img src="{{ asset('storage/' . $product['paths'][1]) }}" class="img_block" alt="Product Image" />    <!-- drugie zdjecie od konca -->
+                            <img src="{{ asset('storage/' . $product['paths'][$nums]) }}" class="img_block" alt="Product Image" />    <!-- drugie zdjecie od konca -->
                         </div>
                         
                         
