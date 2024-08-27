@@ -64,10 +64,13 @@ Route::middleware('auth')->group(function () {
     // Photos route resource
     Route::resource('photos', PhotoController::class);
 
+    // trasa do kupowania
+    Route::get('/shop/buy', [ShopController::class, 'buy'])->name('shop.buy');
+    Route::post('/shop/buy', [ShopController::class, 'validateOrder'])->name('validateOrder');
+    
     // route do sklepu dla usera
     Route::resource('shop', ShopController::class)->only(['index', 'show']);
-    // trasa do kupowania
-    Route::get('/shop/{id}/buy', [ShopController::class, 'buy'])->name('shop.buy');
+    
 
 
     // koszyk

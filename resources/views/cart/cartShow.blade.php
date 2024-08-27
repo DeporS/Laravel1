@@ -62,7 +62,7 @@
                                     <button class="buy-button">Apply</button>
                                 </a>
                             </div>
-                            <a href="" class="mt-4">
+                            <a href="{{ route('shop.buy') }}" class="mt-4">
                                 <button class="buy-button">Buy</button>
                             </a>
                         </div>

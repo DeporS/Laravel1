@@ -61,7 +61,11 @@ class CartController extends Controller
         $cart = session()->get('cart', []);
 
         if (isset($cart[$id])) {
-            unset($cart[$id]);
+            if($cart[$id]['quantity'] > 1){
+                $cart[$id]['quantity'] -= 1;
+            }else{
+                unset($cart[$id]);
+            }
             session()->put('cart', $cart);
         }
 

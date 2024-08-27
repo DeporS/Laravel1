@@ -128,11 +128,9 @@ class ShopController extends Controller
      * Show the form for buying an item.
      */
 
-    public function buy(Request $request, string $id)
+    public function buy()
     {
-        $product = Product::findOrFail($id);
-
-        return view('shop.shopBuy', ['product' => $product]);
+        return view('shop.shopBuy');
     }
 
     /**
