@@ -32,105 +32,114 @@
                     <x-nav-link :href="route('shop.index')" :active="request()->routeIs('shop.index')">
                         {{ __('Shop') }}
                     </x-nav-link>
+                    @if (Auth::user()->role === 'admin')
+                    <x-nav-link :href="route('shopPanel')" :active="request()->routeIs('shopPanel')">
+                        {{ __('Shop Panel') }}
+                    </x-nav-link>
+                    @endif
                 </div>
             </div>
 
-            <!-- Cart Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6" id="cartDropdown">
-                <x-dropdown>
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            
-                            <!-- tutaj dzialanie carta, wyswietlanie sie ilosci przedmiotow w nawiasie -->
-                            
-                            @php
-                                $sum = 0;
-                            @endphp
-
-                            @foreach (session('cart') as $item)
+            <div class="flex">
+                <!-- Cart Dropdown -->
+                <div class="hidden sm:flex sm:items-center sm:ms-6" id="cartDropdown">
+                    <x-dropdown>
+                        <x-slot name="trigger">
+                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                
+                                <!-- tutaj dzialanie carta, wyswietlanie sie ilosci przedmiotow w nawiasie -->
                                 @php
-                                    $sum += $item['quantity'];
+                                    $sum = 0;
                                 @endphp
-                            @endforeach
+                                
+                                @if (session('cart') && count(session('cart')) > 0)
+                                    @foreach (session('cart') as $item)
+                                        @php
+                                            $sum += $item['quantity'];
+                                        @endphp
+                                    @endforeach
+                                @endif
 
-                            @if ( $sum  > 0)
-                                <div>Cart ({{ $sum }})</div>
-                            @else
-                                <div>Cart</div>
-                            @endif
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
-                    
-                    <!-- zawartosc koszyka -->
-                    <x-slot name="content">
-                        @if (session('cart') && count(session('cart')) > 0)
-                            <ul class="cart-list space-y-2 overflow-auto max-h-60">
-                                @foreach (session('cart') as $item)
-                                <li class="flex justify-between items-center bg-white p-2 rounded shadow-sm">
-                                    <a class="flex justify-between items-center" href="/shop/{{ $item['id'] }}">
-                                        <img src="{{ asset('storage/' . $item['img']) }}" class="img" width="40px" height="auto"/>
-                                        <span style="padding-right: 5px; padding-left: 5px;">{{ $item['name'] }}</span>
-                                        <div>
-                                            <span>{{ $item['quantity'] }} x</span>
-                                            <span>${{ number_format($item['price'], 2) }}</span>
-                                        </div>
-                                        
-                                   </a>
-                                    
-                                </li>
-                                @endforeach
-                            </ul>
-                            <div class="border-t border-gray-200 mt-2 pt-2">
-                                <a href="{{ route('cart.show') }}" class="block text-center text-blue-500">View Cart</a>
-                            </div>
-                        @else
-                            <p class="text-center text-gray-500">Your cart is empty.</p>
-                        @endif
-            
+                                @if ( $sum  > 0)
+                                    <div>Cart ({{ $sum }})</div>
+                                @else
+                                    <div>Cart</div>
+                                @endif
+                                
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
                         
-                    </x-slot>
-                </x-dropdown>
-            </div>
+                        <!-- zawartosc koszyka -->
+                        <x-slot name="content">
+                            @if (session('cart') && count(session('cart')) > 0)
+                                <ul class="cart-list space-y-2 overflow-auto max-h-60">
+                                    @foreach (session('cart') as $item)
+                                    <li class="flex justify-between items-center bg-white p-2 rounded shadow-sm">
+                                        <a class="flex justify-between items-center" href="/shop/{{ $item['id'] }}">
+                                            <img src="{{ asset('storage/' . $item['img']) }}" class="img" width="40px" height="auto"/>
+                                            <span style="padding-right: 5px; padding-left: 5px;">{{ $item['name'] }}</span>
+                                            <div>
+                                                <span>{{ $item['quantity'] }} x</span>
+                                                <span>${{ number_format($item['price'], 2) }}</span>
+                                            </div>
+                                            
+                                    </a>
+                                        
+                                    </li>
+                                    @endforeach
+                                </ul>
+                                <div class="border-t border-gray-200 mt-2 pt-2">
+                                    <a href="{{ route('cart.show') }}" class="block text-center text-blue-500">View Cart</a>
+                                </div>
+                            @else
+                                <p class="text-center text-gray-500">Your cart is empty.</p>
+                            @endif
+                
+                            
+                        </x-slot>
+                    </x-dropdown>
+                </div>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
+                <!-- Settings Dropdown -->
+                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                    <x-dropdown width="48">
+                        <x-slot name="trigger">
+                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                <div>{{ Auth::user()->name }}</div>
 
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
 
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
-
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                        <x-slot name="content">
+                            <x-dropdown-link :href="route('profile.edit')">
+                                {{ __('Profile') }}
                             </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
 
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+
+                                <x-dropdown-link :href="route('logout')"
+                                        onclick="event.preventDefault();
+                                                    this.closest('form').submit();">
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
+                            </form>
+                        </x-slot>
+                    </x-dropdown>
+                </div>
+            </div>
+            
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">

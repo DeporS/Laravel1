@@ -5,6 +5,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\ShopPanelController;
 use App\Http\Controllers\Center;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +38,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // route do sklepu dla admina
     Route::resource('shop', ShopController::class)->except(['index', 'show']);
+
+    // shop panel
+    Route::get('/shop-panel', [ShopPanelController::class, 'show'])->name('shopPanel');
+    Route::get('/order-details/{id}', [ShopPanelController::class, 'getOrderDetails']);
 });
 
 
@@ -77,6 +82,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
     Route::get('/cart/show', [CartController::class, 'show'])->name('cart.show'); 
     Route::post('/cart/delete/{id}', [CartController::class, 'delete'])->name('cart.delete');
+    Route::post('/cart/add-discount-code', [CartController::class, 'applyDiscount'])->name('cart.applyDiscount');
 });
 
 

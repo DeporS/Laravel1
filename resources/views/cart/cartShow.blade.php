@@ -47,21 +47,41 @@
                             
                             
                             <div class="mt-4">
-                                <strong>Total:</strong> ${{ number_format($price_sum, 2) }}
+                                <p><strong>Total:</strong> ${{ number_format($price_sum, 2) }}</p>
+                                @if (session('discounted_sum'))
+                                    <p><strong>After discount:</strong> ${{ number_format(session('discounted_sum'), 2) }}</p>
+                                @endif
                             </div>
                         </div>
                         
                         <div class="flex justify-between items-center ">
-                            <div class="flex">
-                                <div>
-                                    <x-input-label for="name" :value="__('Promo code')" />
-                                    <x-text-input type="text" name="name" id="name" value="{{ old('name') }}" class="w-full" required/>
+                            <!-- Promo code -->
+                            <form action="{{ route('cart.applyDiscount') }}" method="POST">
+                                @csrf
+                                <div class="flex">
+                                    <div>
+                                        <x-input-label for="discount_code" :value="__('Discount code')" />
+                                        <x-text-input type="text" name="discount_code" id="discount_code" value="{{ old('discount_code') }}" class="w-full" required/>
+                                    </div>
+                                    <div class="ml-3 mt-4">
+                                        <button type="submit" class="buy-button">Apply</button>
+                                    </div>
+                                    @if ($errors->has('discount_code'))
+                                        <div class="alert alert-danger">
+                                            <p>{{ $errors->first('discount_code') }}</p>
+                                        </div>
+                                    @endif
+                                    
                                 </div>
-                                
-                                <a href="" class="ml-3 mt-4">
-                                    <button class="buy-button">Apply</button>
-                                </a>
-                            </div>
+                            </form>
+
+                            <!-- Buy -->
+                            @if ($errors->has('quantity_error'))
+                                <div class="alert alert-danger">
+                                    <p>{!! $errors->first('quantity_error') !!}</p>
+                                </div>
+                            @endif
+
                             <a href="{{ route('shop.buy') }}" class="mt-4">
                                 <button class="buy-button">Buy</button>
                             </a>

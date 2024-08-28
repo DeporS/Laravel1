@@ -24,7 +24,7 @@ return new class extends Migration
             $table->text('note')->nullable();
             
             // dane klienta
-            $table->string('customer_name'); // imie i nazwisko
+            $table->string('customer_name'); // imie
             $table->string('customer_email'); // email 
             $table->string('customer_phone')->nullable(); // telefon klienta, opcjonalne
             
@@ -37,7 +37,7 @@ return new class extends Migration
             $table->string('country'); // kraj
             
             // stan zamowienia
-            $table->string('status')->default('pending'); // status zamówienia np. 'pending', 'processing', 'shipped', 'completed', 'cancelled' ; domyslnie pending
+            $table->string('status')->default('waiting for payment'); // status zamówienia np. 'waiting for payment', 'pending', 'processing', 'shipped', 'completed', 'cancelled' ; domyslnie pending
 
             // pola do relacji z innymi tablicami
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null'); // relacja z tabela uzytkownikow (jesli istnieje)

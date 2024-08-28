@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage; 
 use App\Models\Product;
+use App\Models\Order;
+use App\Mail\OrderPlaced;
+use Illuminate\Support\Facades\Mail;
 
 
 class ShopController extends Controller
@@ -124,14 +127,6 @@ class ShopController extends Controller
         return redirect()->route('shop.show', $product->id)->with('success', 'Product updated successfully');
     }
 
-    /**
-     * Show the form for buying an item.
-     */
-
-    public function buy()
-    {
-        return view('shop.shopBuy');
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -151,4 +146,109 @@ class ShopController extends Controller
 
         return redirect()->route('shop.index')->with('success', 'Listing deleted successfully.');
     }
+
+
+    /**
+     * Show the form for buying an item.
+     */
+    public function buy()
+    {
+        // Sprawdzenie czy quantity nie jest zbyt wysokie
+        $cart = session()->get('cart', []);
+
+        foreach ($cart as $cartItem){
+            $product = Product::find($cartItem['id']);
+
+            if ($product->available < $cartItem['quantity']){
+                $message = "The quantity for <strong>{$product->name}</strong> exceeds available stock.";
+                return redirect()->route('cart.show')->withErrors([
+                    'quantity_error' => $message
+                ]);
+            }
+        }
+        
+        return view('shop.shopBuy');
+    }
+
+
+    /**
+     * Validate order form and send data to database.
+     */
+    public function validateOrder(Request $request)
+    {
+        $validatedData = $request->validate([
+            'customer_name' => 'required|alpha|max:255',
+            'customer_surname' => 'required|alpha|max:255',
+            'customer_email' => 'required|email|max:255',
+            'customer_phone' => 'nullable|numeric',
+            'address_line_1' => 'required|max:255',
+            'address_line_2' => 'nullable|max:255',
+            'city' => 'required|alpha|max:255',
+            'state' => 'nullable|alpha|max:255',
+            'postal_code' => 'required|postal_code:PL,DE',
+            'country' => 'required|alpha|max:255'
+        ]);
+
+        Mail::to($request->customer_email)->send(new OrderPlaced([
+            'name' => $request->customer_name,
+        ]));
+
+        // wypelniane przez uzytkownika
+        $order = new Order;
+        $order->customer_name = $request->customer_name;
+        $order->customer_surname = $request->customer_surname;
+        $order->customer_email = $request->customer_email;
+        if($request->filled('customer_phone')){
+            $order->customer_phone = $request->customer_phone;
+        }
+        $order->address_line_1 = $request->address_line_1;
+        if($request->filled('address_line_2')){
+            $order->address_line_2 = $request->address_line_2;
+        }
+        $order->city = $request->city;
+        if($request->filled('state')){
+            $order->state = $request->state;
+        }
+        $order->postal_code = $request->postal_code;
+        $order->country = $request->country;
+
+        // wypelniane z automatu
+
+        // pobranie koszyka
+        $cart = session()->get('cart', []);
+
+        $price_sum = 0;
+        $order_cart = [];
+
+        foreach ($cart as $cart_el) {
+            $item = [
+                'id' => $cart_el['id'],
+                'name' => $cart_el['name'],
+                'quantity' => $cart_el['quantity']
+            ];
+        
+            $order_cart[] = $item; 
+
+            $price_sum += $cart_el['price'] * $cart_el['quantity'];
+        }
+
+        // ze znizka
+        if (session('discounted_sum')){
+            $order->price = session('discounted_sum');
+        }else{
+            // bez znizki
+            $order->price = $price_sum;
+        }
+        
+        
+        $order->items = json_encode($order_cart);
+
+        $order->save();
+
+        // wyzerowanie koszyka
+        session()->forget('cart');
+
+        return view('shop.shopPayment');
+    }
+
 }
