@@ -137,6 +137,9 @@
                             </form>
                         </x-slot>
                     </x-dropdown>
+                    <div class="">
+                        <img src="{{ asset('storage/' . Auth::user()->profile_picture_path) }}" alt="Photo" style="width: 50px; height: 50px; object-fit: cover;" cover;>
+                    </div>
                 </div>
             </div>
             

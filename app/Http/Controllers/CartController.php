@@ -13,6 +13,7 @@ class CartController extends Controller
     {
         // zapomnienie o znizce
         session()->forget('discounted_sum');
+        session()->forget('code_id');
 
         $product = Product::findOrFail($id);
 
@@ -75,6 +76,7 @@ class CartController extends Controller
 
             // usuniecie znizki
             session()->forget('discounted_sum');
+            session()->forget('code_id');
         }
 
         return redirect()->back()->with('success', 'Product deleted from cart!');
@@ -109,6 +111,7 @@ class CartController extends Controller
 
         // Zapisz nową sumę w sesji lub przekaż do widoku
         session()->put('discounted_sum', $discounted_sum);
+        session()->put('code_id', $discountCode->id);
 
         return view('cart.cartShow', compact('cart', 'price_sum', 'discounted_sum'));
     }

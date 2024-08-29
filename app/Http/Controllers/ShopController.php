@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage; 
 use App\Models\Product;
 use App\Models\Order;
+use App\Models\DiscountCode;
 use App\Mail\OrderPlaced;
+use DB;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -235,6 +237,7 @@ class ShopController extends Controller
         // ze znizka
         if (session('discounted_sum')){
             $order->price = session('discounted_sum');
+            DB::table('discount_codes')->where('id', session('code_id'))->decrement('usage_limit');
         }else{
             // bez znizki
             $order->price = $price_sum;
