@@ -78,7 +78,7 @@
             <!-- zdjecie -->
             <div class="mb-4 mt-6 space-y-6">
                 <div class="mb-4">
-                    <img src="{{ asset('storage/' . $user->profile_picture_path) }}" alt="Photo" style="width: 200px; height: 200px; object-fit: cover;" cover; padding-top:"30px">
+                    <img src="{{ asset('storage/' . $user->profile_picture_path) }}" alt="Photo" style="width: 200px; height: 200px; object-fit: cover;" padding-top:"30px">
                 </div>
                 {{-- <x-input-label for="photo" :value="__('Profile picture')" /> --}}
                 <input type="file" id="photo" name="photo">

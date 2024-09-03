@@ -1,3 +1,7 @@
+<head>
+    <link rel="stylesheet" href="{{ asset('\css\styles.css') }}">
+    
+</head>
 <x-app-layout>
 
 
@@ -10,4 +14,5 @@
             </div>
         </div>
     </div>
+    
 </x-app-layout>

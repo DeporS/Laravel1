@@ -1,6 +1,32 @@
 <head>
-    <link rel="stylesheet" href="{{ asset('\css\styles.css') }}">
+    <link rel="stylesheet" href="/css/float.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
 </head>
+<!-- Floating button -->
+<div class="floating-container">
+    <div class="floating-button">
+
+        <i class="material-icons">+</i>
+
+        
+    </div>
+    <div class="element-container">
+        <!-- friends -->
+        <a class="float-element" href="{{ route('friends.index') }}" title="Friends"> 
+            <i class="material-icons">people</i>
+        </a>
+
+        <a class="float-element" href="{{ route('friends.create') }}" title="Add friends">
+            <i class="material-icons">person_add</i>
+        </a>
+
+        <a class="float-element" href="" title="Messages">
+            <i class="material-icons">message</i>
+        </a>
+
+    </div>
+</div>
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -137,11 +163,18 @@
                             </form>
                         </x-slot>
                     </x-dropdown>
+                    
+                    <!-- Tutaj zdjecie profilowe -->
                     <div class="">
-                        <img src="{{ asset('storage/' . Auth::user()->profile_picture_path) }}" alt="Photo" style="width: 50px; height: 50px; object-fit: cover;" cover;>
+                        <a href="{{ route('profile.edit') }}"><img src="{{ asset('storage/' . Auth::user()->profile_picture_path) }}" alt="Photo" style="width: 50px; height: 50px; object-fit: cover;" cover;></a>
                     </div>
+
+
+                    
                 </div>
             </div>
+
+            
             
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
@@ -161,6 +194,25 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('form')" :active="request()->routeIs('form')">
+                {{ __('Form') }}
+            </x-responsive-nav-link>
+            @if (Auth::user()->role === 'admin')
+            <x-responsive-nav-link :href="route('formCenter')" :active="request()->routeIs('formCenter')">
+                {{ __('Form Center') }}
+            </x-responsive-nav-link>
+            @endif
+            <x-responsive-nav-link :href="route('photos.index')" :active="request()->routeIs('photos.index')">
+                {{ __('Photos') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('shop.index')" :active="request()->routeIs('shop.index')">
+                {{ __('Shop') }}
+            </x-responsive-nav-link>
+            @if (Auth::user()->role === 'admin')
+            <x-responsive-nav-link :href="route('shopPanel')" :active="request()->routeIs('shopPanel')">
+                {{ __('Shop Panel') }}
+            </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
@@ -188,4 +240,8 @@
             </div>
         </div>
     </div>
+
+    
+    
 </nav>
+

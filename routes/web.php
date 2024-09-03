@@ -8,6 +8,8 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ShopPanelController;
 use App\Http\Controllers\Center;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\FriendsController;
+use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -76,13 +78,21 @@ Route::middleware('auth')->group(function () {
     // route do sklepu dla usera
     Route::resource('shop', ShopController::class)->only(['index', 'show']);
     
-
-
     // koszyk
     Route::get('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
     Route::get('/cart/show', [CartController::class, 'show'])->name('cart.show'); 
     Route::post('/cart/delete/{id}', [CartController::class, 'delete'])->name('cart.delete');
     Route::post('/cart/add-discount-code', [CartController::class, 'applyDiscount'])->name('cart.applyDiscount');
+
+    // route do friends 
+    Route::resource('friends', FriendsController::class);
+    Route::post('friends/{id}/accept', [FriendsController::class, 'accept'])->name('friends.accept');
+    Route::post('friends/{id}/delete', [FriendsController::class, 'delete'])->name('friends.delete');
+
+    // chat
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::post('/chat/broadcast', [ChatController::class, 'broadcast'])->name('chat.broadcast');
+    Route::post('/chat/receive', [ChatController::class, 'receive'])->name('chat.receive');
 });
 
 
